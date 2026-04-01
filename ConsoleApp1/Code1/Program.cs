@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -11,102 +7,131 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-        //а
             Console.InputEncoding = Encoding.Unicode;
             Console.OutputEncoding = Encoding.Unicode;
 
-            DateTime now = DateTime.Now;
+            //1
+            Console.WriteLine("Введіть цільові кроки (0-30000):");
+            string targetInput = Console.ReadLine();
 
-            Console.WriteLine(now.ToString("dddd, dd, MMMM, yy, mm"));
-
-
-        //b  
-
-            Console.Write("Введіть рік народження: ");
-            int year = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Введіть місяць народження: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Введіть день народження: ");
-            int day = Convert.ToInt32(Console.ReadLine());
-
-            DateTime birthDate = new DateTime(year, month, day);
+            Console.WriteLine("Введіть фактичні кроки (0-30000):");
+            string actualInput = Console.ReadLine();
 
 
-            int ageYears = now.Year - birthDate.Year;
-            if (now < birthDate.AddYears(ageYears))
+            bool targetOk = int.TryParse(targetInput, out int targetSteps);
+            bool actualOk = int.TryParse(actualInput, out int actualSteps);
+
+            if (!targetOk || !actualOk)
             {
-                ageYears--;
+                Console.WriteLine("💥 Помилка: введено не число!");
+                return;
             }
 
 
-            int ageMonths = ageYears * 12 + (now.Month - birthDate.Month);
-            if (now.Day < birthDate.Day)
+            if (targetSteps > 50000 || actualSteps > 50000)
             {
-                ageMonths--;
+                Console.WriteLine("💥 Помилка,щось піййшло не так");
+                return;
             }
 
-            // c
+            int percent = actualSteps * 100 / targetSteps;
 
-            DateTime birthDatesecondlife = new DateTime(2010, 12, 6);
+            if (percent >= 100)
+                Console.WriteLine("Ціль досягнута! Ви молодець!");
+            else
+                Console.WriteLine("Ще трохи порухайтесь!");
+            //2
 
-            TimeSpan livedTime = now - birthDate;
+            Console.WriteLine("Вітаємо у магазині електроніки!");
+            Console.WriteLine("Введіть суму покупки в грн:");
+            bool ok = decimal.TryParse(Console.ReadLine(), out decimal totalAmount);
 
-
-            Console.WriteLine($"Ви прожили приблизно {livedTime.TotalSeconds} секунд.");
-
-            //d
-
-            Console.WriteLine($"Вік: {ageYears} років");
-            Console.WriteLine($"Прожито місяців: {ageMonths}");
-            Console.Write("Введіть рік: ");
-
-            int yearlife = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Введіть місяць: ");
-            int monthlife = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Введіть день: ");
-            int daylife = Convert.ToInt32(Console.ReadLine());
-
-
-            DateTime date = new DateTime(year, month, day);
-
-
-            string dayOfWeek = date.ToString("dddd");
-      
-            Console.WriteLine($"Це був день тижня: {dayOfWeek}");
-
-            //e
-            
-            int hour = 8;
-            int minute = 30;
-
-            Console.WriteLine("Навчання починається о 8:30");
-
-            for (int lesson = 1; lesson <= 7; lesson++)
+            if (!ok || totalAmount <= 0)
             {
-                Console.WriteLine($"{lesson} урок - {hour:D2}:{minute:D2}");
+                Console.WriteLine("Невірна сума. Програма завершена.");
+                return;
+            }
 
-              
-                minute += 45;
 
-                if (lesson == 4)
-                    minute += 40; 
+            decimal cashback = 0;
+            if (totalAmount > 2000 && totalAmount <= 10000)
+                cashback = totalAmount * 0.01m;
+            else if (totalAmount > 10000)
+                cashback = totalAmount * 0.05m;
+
+
+            Console.WriteLine("Ви використовуєте карту лояльності? (так/ні)");
+            string loyaltyInput = Console.ReadLine()?.ToLower();// Робимо всі літери маленькими, щоб незалежно від того, як користувач написав "Так" чи "ТАК".
+
+            decimal loyaltyDiscount = 0;
+
+            if (loyaltyInput == "так")
+            {
+                if (totalAmount > 20000)
+                    loyaltyDiscount = totalAmount * 0.05m;
                 else
-                    minute += 15; 
-
-              
-                hour += minute / 60;
-                minute %= 60;
+                    loyaltyDiscount = totalAmount * 0.03m;
             }
+
+
+            decimal totalDiscount = cashback + loyaltyDiscount;
+            if (totalDiscount > totalAmount * 0.10m)
+                totalDiscount = totalAmount * 0.10m;
+
+            decimal finalAmount = totalAmount - totalDiscount;
+
+            Console.WriteLine("\n--- Рахунок ---");
+            Console.WriteLine($"Сума покупки: {totalAmount:F2} грн");
+            Console.WriteLine($"Кешбек: {cashback:F2} грн");
+            Console.WriteLine($"Знижка по картці лояльності: {loyaltyDiscount:F2} грн");
+            Console.WriteLine($"Загальна знижка: {totalDiscount:F2} грн");
+            Console.WriteLine($"До сплати: {finalAmount:F2} грн");
+            Console.WriteLine("-------------------");
+
+            //3 
+            Console.WriteLine("Введіть кількість спожитих кіловат-годин (кВт·год):");
+            string input = Console.ReadLine();
+
+          
+            foreach (char c in input)
+            {
+                if (!char.IsDigit(c))
+                {
+                    Console.WriteLine("💥 Помилка: введено некоректне значення!");
+                    return;
+                }
+            }
+
+            
+            double kWh = Convert.ToDouble(input);
+
+            if (kWh < 0)
+            {
+                Console.WriteLine("💥 Помилка: кількість кВт·год не може бути від’ємною!");
+                return;
+            }
+
+            double cost = 0;
+
+           
+            double firstTier = Math.Min(kWh, 100);
+            cost += firstTier * 1.44;
+
+           
+            if (kWh > 100)
+            {
+                double secondTier = Math.Min(kWh - 100, 500);
+                cost += secondTier * 1.68;
+            }
+
+           
+            if (kWh > 600)
+            {
+                double thirdTier = kWh - 600;
+                cost += thirdTier * 1.92;
+            }
+
+            Console.WriteLine($"Загальна вартість електроенергії: {cost:F2} грн");
         }
-
-
-
-
-
     }
-    }
-
+}
