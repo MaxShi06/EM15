@@ -39,7 +39,7 @@ class Program
         Console.WriteLine("Введи речення:");
         string input = Console.ReadLine();
 
-        if (string.IsNullOrWhiteSpace(input))//IsNullOrWhiteSpace Перевіряє, чи рядок пустий або містить тільки пробіли.
+        if (string.IsNullOrWhiteSpace(input))//IsNullOrWhiteSpace Перевіряє, чи рядок пустий або містить тільки пробіли
         {
             Console.WriteLine("Помилка: рядок пустий");
             return;
