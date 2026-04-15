@@ -1,137 +1,160 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 
-namespace ConsoleApp1
+class Program
 {
-    internal class Program
+    static Dictionary<string, string> contacts = new Dictionary<string, string>();
+
+    static void Main()
     {
-        static void Main(string[] args)
+        while (true)
         {
-            Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.Unicode;
+            Console.WriteLine("\n=== ГОЛОВНЕ МЕНЮ ===");
+            Console.WriteLine("1 - Робота зі словами");
+            Console.WriteLine("2 - Контакти");
+            Console.WriteLine("0 - Вихід");
+            Console.Write("Вибір: ");
 
-            //1
-            Console.WriteLine("Введіть цільові кроки (0-30000):");
-            string targetInput = Console.ReadLine();
+            string choice = Console.ReadLine();
 
-            Console.WriteLine("Введіть фактичні кроки (0-30000):");
-            string actualInput = Console.ReadLine();
-
-
-            bool targetOk = int.TryParse(targetInput, out int targetSteps);
-            bool actualOk = int.TryParse(actualInput, out int actualSteps);
-
-            if (!targetOk || !actualOk)
+            switch (choice)
             {
-                Console.WriteLine("💥 Помилка: введено не число!");
-                return;
-            }
+                case "1":
+                    WordsProgram();
+                    break;
 
+                case "2":
+                    ContactsProgram();
+                    break;
 
-            if (targetSteps > 50000 || actualSteps > 50000)
-            {
-                Console.WriteLine("💥 Помилка,щось піййшло не так");
-                return;
-            }
-
-            int percent = actualSteps * 100 / targetSteps;
-
-            if (percent >= 100)
-                Console.WriteLine("Ціль досягнута! Ви молодець!");
-            else
-                Console.WriteLine("Ще трохи порухайтесь!");
-            //2
-
-            Console.WriteLine("Вітаємо у магазині електроніки!");
-            Console.WriteLine("Введіть суму покупки в грн:");
-            bool ok = decimal.TryParse(Console.ReadLine(), out decimal totalAmount);
-
-            if (!ok || totalAmount <= 0)
-            {
-                Console.WriteLine("Невірна сума. Програма завершена.");
-                return;
-            }
-
-
-            decimal cashback = 0;
-            if (totalAmount > 2000 && totalAmount <= 10000)
-                cashback = totalAmount * 0.01m;
-            else if (totalAmount > 10000)
-                cashback = totalAmount * 0.05m;
-
-
-            Console.WriteLine("Ви використовуєте карту лояльності? (так/ні)");
-            string loyaltyInput = Console.ReadLine()?.ToLower();// Робимо всі літери маленькими, щоб незалежно від того, як користувач написав "Так" чи "ТАК".
-
-            decimal loyaltyDiscount = 0;
-
-            if (loyaltyInput == "так")
-            {
-                if (totalAmount > 20000)
-                    loyaltyDiscount = totalAmount * 0.05m;
-                else
-                    loyaltyDiscount = totalAmount * 0.03m;
-            }
-
-
-            decimal totalDiscount = cashback + loyaltyDiscount;
-            if (totalDiscount > totalAmount * 0.10m)
-                totalDiscount = totalAmount * 0.10m;
-
-            decimal finalAmount = totalAmount - totalDiscount;
-
-            Console.WriteLine("\n--- Рахунок ---");
-            Console.WriteLine($"Сума покупки: {totalAmount:F2} грн");
-            Console.WriteLine($"Кешбек: {cashback:F2} грн");
-            Console.WriteLine($"Знижка по картці лояльності: {loyaltyDiscount:F2} грн");
-            Console.WriteLine($"Загальна знижка: {totalDiscount:F2} грн");
-            Console.WriteLine($"До сплати: {finalAmount:F2} грн");
-            Console.WriteLine("-------------------");
-
-            //3 
-            Console.WriteLine("Введіть кількість спожитих кіловат-годин (кВт·год):");
-            string input = Console.ReadLine();
-
-          
-            foreach (char c in input)
-            {
-                if (!char.IsDigit(c))
-                {
-                    Console.WriteLine("💥 Помилка: введено некоректне значення!");
+                case "0":
                     return;
-                }
             }
+        }
+    }
 
-            
-            double kWh = Convert.ToDouble(input);
+    // 1
+    static void WordsProgram()
+    {
+        Console.WriteLine("Введи речення:");
+        string input = Console.ReadLine();
 
-            if (kWh < 0)
+        if (string.IsNullOrWhiteSpace(input))//IsNullOrWhiteSpace Перевіряє, чи рядок пустий або містить тільки пробіли.
+        {
+            Console.WriteLine("Помилка: рядок пустий");
+            return;
+        }
+
+        string[] wordsArray = input.Split(' ');
+        List<string> wordsList = new List<string>();
+
+        for (int i = 0; i < wordsArray.Length; i++)
+        {
+            if (wordsArray[i] != "")
             {
-                Console.WriteLine("💥 Помилка: кількість кВт·год не може бути від’ємною!");
-                return;
+                wordsList.Add(wordsArray[i]);
             }
+        }
 
-            double cost = 0;
+        Console.WriteLine("Слова:");
 
-           
-            double firstTier = Math.Min(kWh, 100);
-            cost += firstTier * 1.44;
+        for (int i = 0; i < wordsList.Count; i++)
+        {
+            Console.WriteLine(wordsList[i]);
+        }
+    }
 
-           
-            if (kWh > 100)
+    //  2
+    static void ContactsProgram()
+    {
+        while (true)
+        {
+            Console.WriteLine("\n1-Додати 2-Редагувати 3-Видалити 4-Пошук 5-Показати 0-Назад");
+            string choice = Console.ReadLine();
+
+            switch (choice)
             {
-                double secondTier = Math.Min(kWh - 100, 500);
-                cost += secondTier * 1.68;
+                case "1": Add(); break;
+                case "2": Edit(); break;
+                case "3": Delete(); break;
+                case "4": Search(); break;
+                case "5": Show(); break;
+                case "0": return;
             }
+        }
+    }
 
-           
-            if (kWh > 600)
+    static void Add()
+    {
+        Console.Write("Ім’я: ");
+        string name = Console.ReadLine();
+
+        Console.Write("Телефон: ");
+        string phone = Console.ReadLine();
+
+        if (name.Length >= 2 && phone.Length >= 10 && phone.Length <= 12)
+        {
+            contacts[name] = phone;
+            Console.WriteLine("Додано");
+        }
+        else
+        {
+            Console.WriteLine("Невірні дані");
+        }
+    }
+
+    static void Edit()
+    {
+        Console.Write("Ім’я контакту: ");
+        string name = Console.ReadLine();
+
+        if (contacts.ContainsKey(name))
+        {
+            Console.Write("Новий номер: ");
+            string phone = Console.ReadLine();
+            contacts[name] = phone;
+            Console.WriteLine("Оновлено");
+        }
+        else
+        {
+            Console.WriteLine("Не знайдено");
+        }
+    }
+
+    static void Delete()
+    {
+        Console.Write("Ім’я: ");
+        string name = Console.ReadLine();
+
+        if (contacts.Remove(name))
+        {
+            Console.WriteLine("Видалено");
+        }
+        else
+        {
+            Console.WriteLine("Не знайдено");
+        }
+    }
+
+    static void Search()
+    {
+        Console.Write("Пошук: ");
+        string query = Console.ReadLine();
+
+        foreach (var c in contacts)
+        {
+            if (c.Key.Contains(query))
             {
-                double thirdTier = kWh - 600;
-                cost += thirdTier * 1.92;
+                Console.WriteLine(c.Key + " - " + c.Value);
             }
+        }
+    }
 
-            Console.WriteLine($"Загальна вартість електроенергії: {cost:F2} грн");
+    static void Show()
+    {
+        foreach (var c in contacts)
+        {
+            Console.WriteLine(c.Key + " - " + c.Value);
         }
     }
 }
