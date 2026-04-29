@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code1\Models\Contact.cs" />
-    <Compile Include="Code1\Program.cs" />
-    <Compile Include="Code1\Services\ContactService.cs" />
+    <Compile Include="Code2\Team.cs" />
+    <Compile Include="Code2\Game.cs" />
+    <Compile Include="Code2\TeamListService.cs" />
+    <Compile Include="Code2\GameListService.cs" />
+    <Compile Include="Code2\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
