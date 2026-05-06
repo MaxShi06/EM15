@@ -48,7 +48,12 @@
     <Compile Include="Code2\Game.cs" />
     <Compile Include="Code2\TeamListService.cs" />
     <Compile Include="Code2\GameListService.cs" />
-    <Compile Include="Code2\Program.cs" />
+    <Compile Include="Code2\TournamentProgram.cs" />
+    <Compile Include="InventoryApp\Items\Item.cs" />
+    <Compile Include="InventoryApp\Items\HealthPotion.cs" />
+    <Compile Include="InventoryApp\Items\ManaPotion.cs" />
+    <Compile Include="InventoryApp\Player.cs" />
+    <Compile Include="InventoryApp\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
