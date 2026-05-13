@@ -44,17 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code2\Team.cs" />
-    <Compile Include="Code2\Game.cs" />
-    <Compile Include="Code2\TeamListService.cs" />
-    <Compile Include="Code2\GameListService.cs" />
-    <Compile Include="Code2\TournamentProgram.cs" />
-    <Compile Include="InventoryApp\Items\Item.cs" />
-    <Compile Include="InventoryApp\Items\HealthPotion.cs" />
-    <Compile Include="InventoryApp\Items\ManaPotion.cs" />
-    <Compile Include="InventoryApp\Player.cs" />
-    <Compile Include="InventoryApp\Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShooterApp\Entity\Magazine.cs" />
+    <Compile Include="ShooterApp\Entity\Weapon.cs" />
+    <Compile Include="ShooterApp\Entity\Player.cs" />
+    <Compile Include="ShooterApp\Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
